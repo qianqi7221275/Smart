@@ -17,15 +17,10 @@
 	<context:component-scan base-package="com.smart.**.action"></context:component-scan>
 	<!-- 开启注解 -->
 	<mvc:annotation-driven />
-	<!-- 静态资源访问 (暂时没有配置此属性，可以访问，如果不能找到js或图片将此段代码解开) <mvc:resources location="/img/"
-		mapping="/img/**"/> <mvc:resources location="/js/" mapping="/js/**"/> -->
-	<!-- 静态资源因为没有相应的Controller就会被default servlet处理,总之没有相应的Controller就会被default
-		servlet处理 -->
+
 	<mvc:default-servlet-handler />
 
-	<!-- csrf校验token -->
-	<!-- <mvc:interceptors> <bean class="com.cpt.centralstation.common.interceptor.TokenInterceptor"
-		/> </mvc:interceptors> -->
+
 
 
 

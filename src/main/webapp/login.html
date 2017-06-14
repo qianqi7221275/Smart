@@ -1,0 +1,187 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>登录</title>
+    <link rel="stylesheet" href="common/bootstrap-3.3.7-dist/css/bootstrap.min.css">
+    <style>
+        *{margin:0px;padding:0px;}
+        html,body{
+            margin:0px;
+            padding:0px;
+            width:100%;
+            height:100%;
+            font-family: "Microsoft Yahei";
+        }
+        #main{
+            width:100%;
+            height:100%;
+            background-size:100% 100%;
+            /*background:url('common/img/timg.jpeg') no-repeat center;*/
+        }
+        #login{
+            width:500px;
+            height:300px;
+            border:1px solid #ccc;
+            position: absolute;
+            margin-left:-250px;
+            margin-top:-150px;
+            border-radius: 5px;
+            background: rgb(255,255,255);
+            opacity: 0.4;
+            left:50%;
+            top:50%;
+            z-index: 2;
+        }
+        #login2{
+            width:500px;
+            height:300px;
+            position: absolute;
+            margin-left:-250px;
+            margin-top:-150px;
+            left:50%;
+            top:50%;
+            z-index: 3;
+        }
+        #logo{
+            height:70px;
+            width:100%;
+            font-size: 45px;
+            line-height: 70px;
+            text-align: center;
+        }
+        .warning-text{
+            color:#ff8400;
+        }
+        #bg-panel div{
+            float: left;
+            width:50px;
+            height:50px;
+            background-size:100% 100%;
+            cursor: pointer;
+            border-left:2px solid #595151;
+            border-top:2px solid #595151;
+            border-bottom:2px solid #595151;
+
+        }
+    </style>
+    <script src="common/js/jquery-1.10.2.js"></script>
+    <script src="common/js/common.js"></script>
+    <script>
+        $(function () {
+            var bg_img = getCookie('bg_img');
+            if(bg_img){
+                $('#main').css({
+                    'backgroundImage':'url("common/img/'+bg_img+'")'
+                })
+            }else{
+                $('#main').css({
+                    'backgroundImage':'url("common/img/01.jpg")'
+                })
+            }
+        })
+        function setCookie(c_name,value){
+            var expiredays =  1000 * 60 * 24 * 12;
+            var exdate=new Date()
+            exdate.setDate(exdate.getDate()+expiredays)
+            document.cookie=c_name+ "=" +escape(value)+
+                ((expiredays==null) ? "" : ";expires="+exdate.toGMTString())
+        }
+
+        function getCookie(c_name){
+            if (document.cookie.length>0)
+            {
+                c_start=document.cookie.indexOf(c_name + "=")
+                if (c_start!=-1)
+                {
+                    c_start=c_start + c_name.length+1
+                    c_end=document.cookie.indexOf(";",c_start)
+                    if (c_end==-1) c_end=document.cookie.length
+                    return unescape(document.cookie.substring(c_start,c_end))
+                }
+            }
+            return ""
+        }
+    </script>
+</head>
+
+<body>
+<div id="bg-panel" style="width: 100%">
+    <div class="bn-change" tag="01.jpg" style="background-image: url('common/img/01.jpg')"></div>
+    <div class="bn-change" tag="02.png"  style="background-image: url('common/img/02.png')"></div>
+    <div class="bn-change" tag="03.jpg"  style="background-image: url('common/img/03.jpg')"></div>
+    <div class="bn-change" tag="04.jpg"  style="background-image: url('common/img/04.jpg')"></div>
+    <div class="bn-change" tag="05.jpeg"  style="background-image: url('common/img/05.jpeg');border-right: 2px solid #595151;"></div>
+</div>
+<div id="main">
+    <!--<div id="login"></div>-->
+    <div id="login2">
+        <div id="logo">
+            <span style="color:#ff8400">S</span><span style="color: #0066cc;">mart</span>
+        </div>
+        <table style="width:70%;margin-left:15%">
+
+            <tr style="height: 50px">
+                <td>
+                    <div class="input-group-lg">
+                        <input id="username" type="text" class="form-control" placeholder="用户名" aria-describedby="sizing-addon1">
+                    </div>
+                </td>
+            </tr>
+            <tr style="height: 50px">
+                <td>
+                    <div class="input-group-lg">
+                        <input id="password" type="password" class="form-control" placeholder="密码" aria-describedby="sizing-addon1">
+                    </div>
+                </td>
+            </tr>
+            <tr style="height: 50px;">
+                <td>
+                    <button id="login-btn" style="width: 100%;" type="button" class="btn btn-primary btn-lg">登录</button>
+                </td>
+            </tr>
+            <tr>
+                <td class="warning-text" id="warning"></td>
+            </tr>
+        </table>
+    </div>
+</div>
+
+<script>
+
+    $(function () {
+
+        $('.bn-change').click(function () {
+
+            var tag = $(this).attr('tag');
+            $('#main').css({
+                'backgroundImage':'url("common/img/'+tag+'")'
+            });
+            setCookie('bg_img',''+tag);
+        });
+
+        $('#login-btn').click(function(){
+            var username = $('#username').val();
+            var password = $('#password').val();
+            $.post('MemberAction/login.do',{username:username,password:password,r:new Date().getTime()},function (result) {
+                processPostResult({
+                    result:result,
+                    success:function () {
+                        window.location.href='index.html';
+                    },
+                    error:function () {
+
+                    },
+                    warning:function () {
+                        $('#warning').text(result.errorMsg);
+                    }
+                });
+            });
+        });
+    })
+</script>
+</body>
+</html>
